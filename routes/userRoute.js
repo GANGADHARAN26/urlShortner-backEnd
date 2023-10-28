@@ -73,7 +73,9 @@ userRouter.post('/forgotPassword',async(req,res)=>{
             const token=jwt.sign({email:email},process.env.JWT_SECRET,{expiresIn:'1d'});
             const link=`${process.env.FRONTEND_URL}/verifyPassword?token=${token}`
             await userSchemaModel.updateOne({email:email},{'$set':{token:token}})
-            await transport.sendMail({...mailOptions,to:email,subject:"Password reset verification link",to:email,text:`Please verify your e-mail address to change the password using these link ${link} `})
+            await transport.sendMail({...mailOptions,to:email,
+                subject:"Forgot password  verification link",to:email,
+                text:`Please verify your e-mail address to change the password using these link ${link} `})
             res.status(200).send({message:"email successfully"}) 
             console.log("email successfully"+link)
         }
